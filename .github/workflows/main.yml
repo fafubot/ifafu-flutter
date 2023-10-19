@@ -22,7 +22,7 @@ jobs:
         id: commit_comments
         run: |         
           echo "List of Commits in this Push:"
-          for commit in "${{ github.event.commits }}"; do
+          for commit in ${{ github.event.commits }}; do
             echo "$commit"
           done
           
