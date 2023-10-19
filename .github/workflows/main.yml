@@ -21,6 +21,9 @@ jobs:
       - name: Extract Commit Comments
         id: commit_comments
         run: |         
-          echo "Commits: ${{ toJson(github.event.commits) }}"
+          commits=$(echo '${{ toJson(github.event.commits) }}' | jq '.[] | .id[0:6] + " " + .message' -r)
+          echo "$commits" | while read commit; do
+            echo $commit
+          done
           
           
