@@ -23,6 +23,7 @@ jobs:
         run: |
           UPLOAD_URL='https://api2.ifafu.cn/api/app/update/ci?token=${{ secrets.CI_TOKEN }}'
           FILE_PATH=app-arm64-v8a-release.apk
-          COMMIT_MESSAGE=$(echo '${{ toJson(github.event.commits) }}' | jq -r '.[] | .id[0:6] + " " + .message')
-          MESSAGE="$COMMIT_MESSAGE\n-- CI from ${{ github.ref }} - ${GITHUB_SHA::7}"
+          COMMIT_MESSAGE=$(echo '${{ toJson(github.event.commits) }}' | jq -r '.[] | .id[0:7] + " " + .message')
+          MESSAGE="$COMMIT_MESSAGE
+          -- CI from ${{ github.ref }} - ${GITHUB_SHA::7}"
           curl -X POST -F "file=@$FILE_PATH" -F "message=$MESSAGE" $UPLOAD_URL
