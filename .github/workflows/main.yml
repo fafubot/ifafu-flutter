@@ -31,7 +31,7 @@ jobs:
           done
           
           # 输出COMMENT_MESSAGE变量
-          echo "::set-output name=COMMENT_MESSAGE::$COMMENT_MESSAGE"
+          echo $COMMENT_MESSAGE
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
