@@ -15,22 +15,23 @@ jobs:
     name: Build and Package APKs
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Extract commit messages
-        id: extract
+      - name: Check out the code
+        uses: actions/checkout@v2
+  
+      - name: Extract and Comment on Push Commits
         run: |
-          messages=$(git log --format="%s" ${{ github.event.before }}..${{ github.sha }})
-          message_list=""
-          IFS=$'\n'  # Set Internal Field Separator to newline
-          messages=($messages)
-          for ((i=0; i<${#messages[@]}; i++)); do
-            message_list="${message_list}${i}. ${messages[i]}\n"
+          # 获取本次push的commit信息
+          COMMITS=$(git log --pretty=format:"%h %s")
+          
+          # 将commit信息按行分割，并标注序号
+          IFS=$'\n' read -r -a COMMIT_MESSAGES <<< "$COMMITS"
+          COMMENT_MESSAGE=""
+          for ((i=0; i<${#COMMIT_MESSAGES[@]}; i++)); do
+            COMMENT_MESSAGE="$COMMENT_MESSAGE$((i+1)). ${COMMIT_MESSAGES[i]}\n"
           done
-          echo "::set-output name=commit_messages::${message_list}"
-        shell: bash
-
-      - name: Display commit messages
-        run: echo "${{ steps.extract.outputs.commit_messages }}"
+          
+          # 输出COMMENT_MESSAGE变量
+          echo "::set-output name=COMMENT_MESSAGE::$COMMENT_MESSAGE"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
