@@ -52,10 +52,10 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          cache: true
+          cache: false
         
       - name: Build and package APKs
-        run: flutter build apk --release --split-per-abi
+        run: flutter build apk --release --split-per-abi 
       
       - name: Upload APKs
         uses: actions/upload-artifact@v3
