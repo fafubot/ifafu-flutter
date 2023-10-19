@@ -21,10 +21,6 @@ jobs:
       - name: Extract Commit Comments
         id: commit_comments
         run: |         
-          echo "List of Commits in this Push:"
-          for commit in ${{ github.event.commits }}; do
-            echo "Commit Message: ${commit[0][0]}"
-            echo "---"
-          done
+          echo "Commits: ${{ toJson(github.event.commits) }}"
           
           
