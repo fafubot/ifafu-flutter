@@ -21,6 +21,8 @@ jobs:
       - name: Extract Commit Comments
         id: commit_comments
         run: |         
-          echo ${{ github.event.commits }}
+          for commit in ${{ github.event.commits }}; do
+            echo $commit
+          done
           
           
