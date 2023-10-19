@@ -18,10 +18,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Upload File
+      - name: Parse and number commit messages
         run: |
-          FILE_PATH=app-arm64-v8a-release.apk
-          UPLOAD_URL='https://api2.ifafu.cn/api/app/update/ci?token=${{ secrets.CI_TOKEN }}'
-          COMMIT_MESSAGE="$(git log -1 --pretty=%B)"
-          curl -X POST -F "file=@$FILE_PATH" -F "message=$COMMIT_MESSAGE" $UPLOAD_URL
+          COMMIT_MESSAGES=$(git log --oneline HEAD...HEAD^)
+          COMMENT_MESSAGE=""
+          IFS=$'\n'
+          for MESSAGE in $COMMIT_MESSAGES; do
+            COMMENT_MESSAGE="${COMMENT_MESSAGE}$(echo "$MESSAGE" | cut -d' ' -f2- | sed 's/^/[comment] /')\n"
+          done
+          echo "COMMENT_MESSAGE=${COMMENT_MESSAGE}" >> $GITHUB_ENV
           
