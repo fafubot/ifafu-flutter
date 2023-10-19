@@ -67,16 +67,7 @@ android {
         }
 
         release {
-            if (!keystorePropertiesFile.exists()) {
-                println 'Keystore properties not found, use debug key'
-                signingConfig signingConfigs.debug
-            } else if (!rootProject.file(keystoreProperties['storeFile']).exists()){
-                println "Key ${keystoreProperties['storeFile']} not found, use debug key"
-                signingConfig signingConfigs.debug
-            } else {
-                println 'Use release key'
-                signingConfig signingConfigs.release
-            }
+            signingConfig signingConfigs.debug
         }
     }
 }
