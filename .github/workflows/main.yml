@@ -22,4 +22,6 @@ jobs:
         run: |
           FILE_PATH=app-arm64-v8a-release.apk
           UPLOAD_URL='https://api2.ifafu.cn/api/app/update/ci?token=${{ secrets.CI_TOKEN }}'
-          curl -X POST -F "file=@$FILE_PATH" $UPLOAD_URL
+          COMMIT_MESSAGE="$(git log -1 --pretty=%B)"
+          curl -X POST -F "file=@$FILE_PATH" -F "message=$COMMIT_MESSAGE" $UPLOAD_URL
+          
