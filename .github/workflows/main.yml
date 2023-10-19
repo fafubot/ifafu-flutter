@@ -23,12 +23,6 @@ jobs:
         run: |         
           # 获取本次push的commit信息
           COMMITS=$(git log --pretty=format:"%h %s")
+          echo $COMMITS
           
-          # 将commit信息按行分割，并标注序号
-          IFS=$'\n' read -r -a COMMIT_MESSAGES <<< "$COMMITS"
-          COMMENT_MESSAGE=""
-          for ((i=0; i<${#COMMIT_MESSAGES[@]}; i++)); do
-            COMMENT_MESSAGE="$COMMENT_MESSAGE$(${COMMIT_MESSAGES[i]}\n"
-          done
-          echo "$COMMIT_MESSAGE"
           
