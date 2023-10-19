@@ -18,13 +18,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Parse and number commit messages
+      - name: Extract commit messages
+        id: extract
         run: |
-          COMMIT_MESSAGES=$(git log --oneline HEAD...HEAD^)
-          COMMENT_MESSAGE=""
-          IFS=$'\n'
-          for MESSAGE in $COMMIT_MESSAGES; do
-            COMMENT_MESSAGE="${COMMENT_MESSAGE}$(echo "$MESSAGE" | cut -d' ' -f2- | sed 's/^/[comment] /')\n"
+          messages=$(git log --format="%s" ${{ github.event.before }}..${{ github.sha }})
+          message_list=""
+          IFS=$'\n'  # Set Internal Field Separator to newline
+          messages=($messages)
+          for ((i=0; i<${#messages[@]}; i++)); do
+            message_list="${message_list}${i}. ${messages[i]}\n"
           done
-          echo "COMMENT_MESSAGE=${COMMENT_MESSAGE}" >> $GITHUB_ENV
+          echo "::set-output name=commit_messages::${message_list}"
+        shell: bash
+
+      - name: Display commit messages
+        run: echo "${{ steps.extract.outputs.commit_messages }}"
           
