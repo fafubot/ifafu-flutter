@@ -17,21 +17,17 @@ jobs:
     steps:
       - name: Check out the code
         uses: actions/checkout@v2
-  
-      - name: Extract and Comment on Push Commits
+
+      - name: Extract Commit Comments
+        id: commit_comments
         run: |
-          # 获取本次push的commit信息
-          COMMITS=$(git log --pretty=format:"%h %s")
-          
-          # 将commit信息按行分割，并标注序号
-          IFS=$'\n' read -r -a COMMIT_MESSAGES <<< "$COMMITS"
-          COMMENT_MESSAGE=""
-          for ((i=0; i<${#COMMIT_MESSAGES[@]}; i++)); do
-            COMMENT_MESSAGE="$COMMENT_MESSAGE$((i+1)). ${COMMIT_MESSAGES[i]}\n"
+          COMMENTS=""
+          for COMMIT_HASH in $(git log --format="%h" ${{ github.event.before }}..${{ github.sha }}); do
+            COMMIT_MESSAGE=$(git log --format="%s" -n 1 $COMMIT_HASH)
+            COMMENTS="$COMMENTS$COMMIT_MESSAGE\n"
           done
-          
-          # 输出COMMENT_MESSAGE变量
-          echo $COMMENT_MESSAGE
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo "::set-output name=COMMENT_MESSAGE::$COMMENTS"
+
+      - name: Print Commit Comments
+        run: echo "$COMMIT_MESSAGE"
           
