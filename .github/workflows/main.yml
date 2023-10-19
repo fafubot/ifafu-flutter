@@ -28,5 +28,5 @@ jobs:
           files: "{ 'file': app-arm64-v8a-release.apk }"
           
       - name: Show Response
-          run:|
-            echo ${{ steps.request.outputs.response }}
+        run: |
+          echo ${{ steps.request.outputs.response }}
