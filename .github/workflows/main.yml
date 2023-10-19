@@ -25,5 +25,5 @@ jobs:
           echo "$commits" | while read commit; do
             echo $commit
           done
-          echo "commits: ${commit}"
+          echo "commits: ${commits}"
           
