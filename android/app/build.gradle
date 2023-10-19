@@ -57,17 +57,6 @@ android {
         multiDexEnabled true
     }
 
-    signingConfigs {
-        if (keystorePropertiesFile.exists() && rootProject.file(keystoreProperties['storeFile']).exists()) {
-            release {
-                storeFile rootProject.file(keystoreProperties['storeFile'])
-                storePassword keystoreProperties['storePassword']
-                keyAlias keystoreProperties['keyAlias']
-                keyPassword keystoreProperties['keyPassword']
-            }
-        }
-    }
-
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
