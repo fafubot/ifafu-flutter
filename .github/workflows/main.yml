@@ -24,4 +24,4 @@ jobs:
           url: 'https://api2.ifafu.cn/api/app/update/ci?token=${{ secrets.CI_TOKEN }}'
           method: 'POST'
           customHeaders: '{"Content-Type": "application/vnd.android.package-archive"}'
-          file: 'app-arm64-v8a-release.apk'
+          files: "{ 'file': app-arm64-v8a-release.apk, 'message': ${{ github.event.head_commit.message }} }"
