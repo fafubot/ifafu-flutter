@@ -20,14 +20,15 @@ jobs:
 
       - name: Extract Commit Comments
         id: commit_comments
-        run: |
-          COMMENTS=""
-          for COMMIT_HASH in $(git log --format="%h" ${{ github.event.before }}..${{ github.sha }}); do
-            COMMIT_MESSAGE=$(git log --format="%s" -n 1 $COMMIT_HASH)
-            COMMENTS="$COMMENTS$COMMIT_MESSAGE\n"
+        run: |         
+          # 获取本次push的commit信息
+          COMMITS=$(git log --pretty=format:"%h %s")
+          
+          # 将commit信息按行分割，并标注序号
+          IFS=$'\n' read -r -a COMMIT_MESSAGES <<< "$COMMITS"
+          COMMENT_MESSAGE=""
+          for ((i=0; i<${#COMMIT_MESSAGES[@]}; i++)); do
+            COMMENT_MESSAGE="$COMMENT_MESSAGE$(${COMMIT_MESSAGES[i]}\n"
           done
-          echo "::set-output name=COMMENT_MESSAGE::$COMMENTS"
-
-      - name: Print Commit Comments
-        run: echo "$COMMIT_MESSAGE"
+          echo "$COMMIT_MESSAGE"
           
