@@ -21,6 +21,6 @@ jobs:
       - name: Extract Commit Comments
         id: commit_comments
         run: |         
-          git log --format="%h %s (%an)" ${{ github.event.before }}..${{ github.sha }}
+          echo ${{ github.event.commits }}
           
           
