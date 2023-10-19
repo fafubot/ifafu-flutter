@@ -23,9 +23,11 @@ jobs:
         run: |         
           echo "List of Commits in this Push:"
           for commit in ${{ github.event.commits }}; do
-            for c in $commit; do
-              echo "Commit: $c"
-            done
+            echo "Commit Message: $commit.message"
+            echo "Author Name: $commit.author.name"
+            echo "Author Email: $commit.author.email"
+            echo "Commit SHA: $commit.id"
+            echo "---"
           done
           
           
