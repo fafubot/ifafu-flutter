@@ -21,8 +21,16 @@ jobs:
       - name: Extract Commit Comments
         id: commit_comments
         run: |         
-          # 获取本次push的commit信息
-          COMMITS=$(git log --pretty=format:"%h - %an, %ar : %s" ${{ github.event.before }}..${{ github.event.after }})
-          echo $COMMITS
+          # 获取最新提交的 SHA（哈希值）
+          latest_commit_sha=$(git rev-parse HEAD)
+          
+          # 获取本次 push 的 commit 数
+          commit_count=$(git rev-list --count HEAD ^$latest_commit_sha)
+          
+          # 获取本次 push 的所有 commit 记录
+          commit_messages=$(git log --oneline -$commit_count)
+          
+          echo "Commits in this push:"
+          echo "$commit_messages"
           
           
