@@ -22,7 +22,7 @@ jobs:
         id: commit_comments
         run: |         
           # 获取本次push的commit信息
-          COMMITS=$(git log --pretty=format:"%h %s")
+          COMMITS=$(git log --pretty=format:"%h - %an, %ar : %s" ${{ github.event.before }}..${{ github.event.after }})
           echo $COMMITS
           
           
